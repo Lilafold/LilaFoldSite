@@ -7,8 +7,8 @@ EmailOctopus through a small Cloudflare Worker, so the API key never reaches the
 
 ```bash
 npm install
-npm run dev          # site on http://localhost:5173
-npm run worker:dev   # subscribe API on http://localhost:8787 (needs worker/.dev.vars)
+npm run dev          
+npm run worker:dev   
 ```
 
 `worker/.dev.vars` (git-ignored) holds the key for local runs:
