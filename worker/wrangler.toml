@@ -1,0 +1,12 @@
+name = "lilafold-subscribe"
+main = "src/index.js"
+compatibility_date = "2025-01-01"
+
+[vars]
+# Not secret: the EmailOctopus list new subscribers join ("Audience").
+EMAILOCTOPUS_LIST_ID = "228fb660-da00-11f1-9990-fb376e6e0fec"
+# Sites allowed to call this API.
+ALLOWED_ORIGINS = "https://lilafold.github.io,http://localhost:5173,http://localhost:4173"
+
+# The API key is a secret, set once with:
+#   npx wrangler secret put EMAILOCTOPUS_API_KEY --config worker/wrangler.toml
