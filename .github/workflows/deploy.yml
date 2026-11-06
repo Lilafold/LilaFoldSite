@@ -26,7 +26,9 @@ jobs:
       - run: npm ci
       - run: npm run build
         env:
-          VITE_BASE: /${{ github.event.repository.name }}/
+          # Served from the custom domain root (lilafold.io). Without a custom domain,
+          # set the repo variable SITE_BASE to /LilaFoldSite/.
+          VITE_BASE: ${{ vars.SITE_BASE || '/' }}
           # Repo variable (Settings > Secrets and variables > Actions > Variables):
           # the URL of the deployed lilafold-subscribe Worker.
           VITE_SUBSCRIBE_ENDPOINT: ${{ vars.SUBSCRIBE_ENDPOINT }}
