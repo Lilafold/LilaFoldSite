@@ -95,7 +95,7 @@ a { color: inherit; }
   font-size: 17px;
   letter-spacing: -0.02em;
 }
-.brand svg { width: 24px; height: 24px; display: block; }
+.brand img { width: 28px; height: 28px; display: block; }
 .nav-right { display: flex; align-items: center; gap: 8px; }
 
 .chip {
