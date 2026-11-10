@@ -26,9 +26,13 @@ function Byline({ post }) {
   );
 }
 
-function Card({ post }) {
+function Card({ post, onNavigate }) {
   return (
-    <a className="post-card glow" href={postHref(post.slug)}>
+    <a
+      className="post-card glow"
+      href={postHref(post.slug)}
+      onClick={(e) => onNavigate && onNavigate(post.slug, e)}
+    >
       <Cover post={post} />
       <div className="post-card-body">
         <h3>{post.title}</h3>
@@ -39,7 +43,7 @@ function Card({ post }) {
   );
 }
 
-function Index() {
+function Index({ onNavigate }) {
   const [tag, setTag] = useState("");
   const tags = useMemo(() => [...new Set(posts.flatMap((p) => p.tags))], []);
   const featured = posts.find((p) => p.featured) || posts[0];
@@ -65,7 +69,12 @@ function Index() {
       )}
 
       {showFeatured && (
-        <a className="featured glow beam reveal" style={{ "--i": 3 }} href={postHref(featured.slug)}>
+        <a
+          className="featured glow beam reveal"
+          style={{ "--i": 3 }}
+          href={postHref(featured.slug)}
+          onClick={(e) => onNavigate && onNavigate(featured.slug, e)}
+        >
           <Cover post={featured} large />
           <div className="featured-body">
             <p className="featured-label">Featured</p>
@@ -81,7 +90,7 @@ function Index() {
         <div className="post-grid">
           {rest.map((p, i) => (
             <div key={p.slug} className="reveal" style={{ "--i": 4 + i }}>
-              <Card post={p} />
+              <Card post={p} onNavigate={onNavigate} />
             </div>
           ))}
         </div>
@@ -92,14 +101,19 @@ function Index() {
   );
 }
 
-function Post({ post }) {
+function Post({ post, onNavigate }) {
   const html = useMemo(() => renderMarkdown(post.body), [post]);
   const more = posts.filter((p) => p !== post).slice(0, 3);
 
   return (
     <>
       <article className="post">
-        <a className="back-link reveal" style={{ "--i": 1 }} href={BLOG}>
+        <a
+          className="back-link reveal"
+          style={{ "--i": 1 }}
+          href={BLOG}
+          onClick={(e) => onNavigate && onNavigate(null, e)}
+        >
           <ArrowRight className="back-arrow" /> All posts
         </a>
         <header className="post-head reveal" style={{ "--i": 2 }}>
@@ -128,7 +142,7 @@ function Post({ post }) {
           <h2 id="more-title">More from the blog</h2>
           <div className="post-grid">
             {more.map((p) => (
-              <Card key={p.slug} post={p} />
+              <Card key={p.slug} post={p} onNavigate={onNavigate} />
             ))}
           </div>
         </section>
@@ -142,8 +156,25 @@ export default function BlogApp() {
   const handleNoGl = useCallback(() => setNoGl(true), []);
   useSpotlight();
 
-  const slug = new URLSearchParams(window.location.search).get("post");
+  const [slug, setSlug] = useState(() => new URLSearchParams(window.location.search).get("post"));
   const post = slug ? posts.find((p) => p.slug === slug) : null;
+
+  useEffect(() => {
+    const onPop = () => {
+      setSlug(new URLSearchParams(window.location.search).get("post"));
+    };
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, []);
+
+  const handleNavigate = useCallback((nextSlug, e) => {
+    if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)) return;
+    if (e) e.preventDefault();
+    const url = nextSlug ? `${BLOG}?post=${encodeURIComponent(nextSlug)}` : BLOG;
+    window.history.pushState({}, "", url);
+    setSlug(nextSlug || null);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
 
   useEffect(() => {
     document.title = post ? `${post.title} | LilaFold` : slug ? "Post not found | LilaFold" : "Blog | LilaFold";
@@ -161,13 +192,13 @@ export default function BlogApp() {
           <div className="empty">
             <h1>Post not found</h1>
             <p>
-              It may have moved. <a href={BLOG}>See all posts</a>.
+              It may have moved. <a href={BLOG} onClick={(e) => handleNavigate(null, e)}>See all posts</a>.
             </p>
           </div>
         ) : post ? (
-          <Post post={post} />
+          <Post post={post} onNavigate={handleNavigate} />
         ) : (
-          <Index />
+          <Index onNavigate={handleNavigate} />
         )}
       </main>
       <Footer home={false} />

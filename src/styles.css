@@ -371,6 +371,7 @@ h1 .soft { color: var(--lila-soft); }
   max-width: 1160px;
   margin: 0 auto;
   padding: clamp(80px, 12vw, 152px) var(--gutter) 0;
+  scroll-margin-top: 96px;
 }
 .section-head { max-width: 40rem; margin-bottom: 48px; }
 .section-head.center { margin-left: auto; margin-right: auto; text-align: center; }
@@ -549,7 +550,7 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
   overflow: hidden;
   box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.9);
 }
-.code-tabs { display: flex; gap: 4px; padding: 10px; border-bottom: 1px solid var(--line); }
+.code-tabs { display: flex; gap: 4px; padding: 10px; border-bottom: 1px solid var(--line); align-items: center; }
 .code-tabs button {
   border: 0;
   cursor: pointer;
@@ -560,9 +561,25 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
   font-family: var(--sans);
   font-size: 13.5px;
   font-weight: 600;
+  transition: all .15s ease;
 }
 .code-tabs button:hover { color: var(--text); }
 .code-tabs button.active { background: rgba(255, 255, 255, 0.08); color: var(--text); }
+.code-tabs button.tab-response {
+  margin-left: auto;
+  color: var(--lila);
+  border: 1px solid rgba(233, 166, 255, 0.2);
+  background: rgba(233, 166, 255, 0.05);
+}
+.code-tabs button.tab-response:hover {
+  background: rgba(233, 166, 255, 0.12);
+  color: var(--lila-soft);
+}
+.code-tabs button.tab-response.active {
+  background: rgba(233, 166, 255, 0.22);
+  border-color: rgba(233, 166, 255, 0.45);
+  color: #fff;
+}
 .code-card pre {
   margin: 0;
   /* fixed to the longest snippet so switching languages never jumps */
@@ -689,6 +706,18 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
   font-variant-numeric: tabular-nums;
 }
 .hw-stage .fine { margin-top: 10px; max-width: 40ch; }
+.hw-cta { margin-top: 12px; }
+.hw-pilot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13.5px;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.hw-pilot-link span { color: var(--lila); font-weight: 500; }
+.hw-pilot-link:hover span { text-decoration: underline; color: var(--lila-soft); }
 
 /* ---------- Roadmap ---------- */
 .timeline {
@@ -736,6 +765,7 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
   border-bottom: 1px solid var(--line);
 }
 .founder-role { font-size: 14px; font-weight: 600; color: var(--lila); }
+.founder-details { display: flex; flex-direction: column; gap: 4px; }
 .founder-name {
   font-family: var(--display);
   font-weight: 600;
@@ -743,6 +773,16 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
   line-height: 1.05;
   letter-spacing: -0.035em;
 }
+.founder-bio { margin: 6px 0 0; color: var(--muted); font-size: 15px; line-height: 1.5; max-width: 52ch; }
+.founder-links { display: flex; gap: 14px; margin-top: 8px; }
+.founder-links a {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--lila);
+  text-decoration: none;
+  transition: color .2s ease;
+}
+.founder-links a:hover { color: var(--lila-soft); text-decoration: underline; }
 
 /* ---------- Join ---------- */
 .join { padding-bottom: clamp(72px, 10vw, 120px); }
@@ -872,6 +912,19 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
 }
 .marquee-row img:hover { opacity: 1; filter: none; }
 .sponsor-placeholder { color: var(--dim); }
+.sponsor-spec { display: inline-flex; align-items: center; gap: 10px; }
+.sponsor-spec-tag {
+  font-family: var(--sans);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--lila-soft);
+  background: rgba(233, 166, 255, 0.12);
+  border: 1px solid rgba(233, 166, 255, 0.22);
+}
 @keyframes marquee { to { transform: translateX(-50%); } }
 
 /* ---------- Manifesto ---------- */
@@ -1053,4 +1106,10 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
   .marquee-row { flex-wrap: wrap; row-gap: 10px; padding: 0 var(--gutter); }
   .manifesto span { opacity: 1; }
   .chip-stat.in { animation: none; }
+}
+
+@media print {
+  body { background: #fff !important; color: #000 !important; }
+  .backdrop, .nav, .menu-btn, .marquee { display: none !important; }
+  .sr, .condense { opacity: 1 !important; transform: none !important; filter: none !important; }
 }

@@ -56,7 +56,10 @@ export function useMistScroll() {
         const s = clamp01(y / (vh * 0.85));
         hero.style.transform = s ? `translate3d(0, ${(y * 0.35).toFixed(1)}px, 0) scale(${(1 - s * 0.06).toFixed(3)})` : "";
         hero.style.filter = s > 0.01 ? `blur(${(s * 14).toFixed(1)}px)` : "";
-        hero.style.opacity = (1 - s * 1.1).toFixed(3);
+        const op = Math.max(0, 1 - s * 1.15);
+        hero.style.opacity = op.toFixed(3);
+        hero.style.visibility = op <= 0.005 ? "hidden" : "visible";
+        hero.style.pointerEvents = op <= 0.005 ? "none" : "";
       }
       for (const { el, s, noBlur, stagger } of items) {
         const r = el.getBoundingClientRect();
@@ -85,11 +88,23 @@ export function useMistScroll() {
       }
     };
 
+    const cleanupFocus = [];
+    items.forEach(({ el }) => {
+      const onFocus = () => {
+        el.style.opacity = "1";
+        el.style.transform = "";
+        el.style.filter = "";
+      };
+      el.addEventListener("focusin", onFocus);
+      cleanupFocus.push(() => el.removeEventListener("focusin", onFocus));
+    });
+
     const request = () => { if (!raf) raf = requestAnimationFrame(update); };
     update();
     window.addEventListener("scroll", request, { passive: true });
     window.addEventListener("resize", request);
     return () => {
+      cleanupFocus.forEach((fn) => fn());
       window.removeEventListener("scroll", request);
       window.removeEventListener("resize", request);
       cancelAnimationFrame(raf);

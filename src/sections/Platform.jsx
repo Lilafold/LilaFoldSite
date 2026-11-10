@@ -36,9 +36,25 @@ const snippets = {
     "});",
     "console.log(result.text);",
   ].join("\n"),
+  response: [
+    "{",
+    '  "model": "lilafold-sec",',
+    '  "category": "credential_access",',
+    '  "threat_level": "medium",',
+    '  "summary": "Distributed brute-force against SSH (port 22). 14 failed logins in 180s from 203.0.113.7.",',
+    '  "recommended_action": "Null-route 203.0.113.7 at border firewall; audit fail2ban rules.",',
+    '  "latency_ms": 8.4,',
+    '  "usage": { "prompt_tokens": 14, "completion_tokens": 42 }',
+    "}",
+  ].join("\n"),
 };
 
-const tabs = [["curl", "cURL"], ["python", "Python"], ["js", "JavaScript"]];
+const tabs = [
+  ["curl", "cURL"],
+  ["python", "Python"],
+  ["js", "JavaScript"],
+  ["response", "Response (JSON)"],
+];
 
 const features = [
   { title: "Simple API", body: "One endpoint per task. Send text, get an answer." },
@@ -102,7 +118,7 @@ export default function Platform() {
                 aria-selected={tab === k}
                 aria-controls="code-panel"
                 tabIndex={tab === k ? 0 : -1}
-                className={tab === k ? "active" : ""}
+                className={`${tab === k ? "active" : ""} ${k === "response" ? "tab-response" : ""}`.trim()}
                 onClick={() => setTab(k)}
               >
                 {label}
@@ -112,7 +128,11 @@ export default function Platform() {
           <pre id="code-panel" role="tabpanel" aria-labelledby={`tab-${tab}`} tabIndex={0}>
             <code>{snippets[tab]}</code>
           </pre>
-          <figcaption className="fine">A preview of the planned API. Names and fields may change before launch.</figcaption>
+          <figcaption className="fine">
+            {tab === "response"
+              ? "Simulated structured output from lilafold-sec running on LilaFold Cloud."
+              : "A preview of the planned API. Names and fields may change before launch."}
+          </figcaption>
         </figure>
       </div>
 

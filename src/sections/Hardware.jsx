@@ -124,6 +124,11 @@ export default function Hardware() {
               Illustration of the concept, not a final design. No hardware is for sale yet. We will run pilots
               with early partners first.
             </p>
+            <div className="hw-cta">
+              <a href="#join" className="hw-pilot-link">
+                Interested in early hardware pilots? <span>Register your interest &rarr;</span>
+              </a>
+            </div>
           </div>
         </div>
       </div>

@@ -4,20 +4,33 @@ import { FoldMark } from "../components/Icons.jsx";
 // Without a logo the name is set in the display type. Only list organisations that have agreed to be shown.
 const sponsors = [];
 
-// Until there are real sponsors, placeholder names scroll in local development
-// only, so the band can be judged. A production build hides the whole band.
-const placeholders = Array.from({ length: 4 }, () => ({ name: "Your sponsor here", placeholder: true }));
-const list = sponsors.length ? sponsors : import.meta.env.DEV ? placeholders : [];
+// Technical specs highlighted in the marquee band until sponsors or design partners are announced.
+const specs = [
+  { name: "100M–500M Parameters", tag: "Compact" },
+  { name: "Local NPU First", tag: "Hardware" },
+  { name: "Zero Data Egress", tag: "Private" },
+  { name: "Sub-10ms Inference", tag: "Speed" },
+  { name: "Modular Workloads", tag: "Architecture" },
+  { name: "Cybersecurity First", tag: "Domain" },
+];
+
+const list = sponsors.length ? sponsors : specs;
 
 // repeat a short list so one row is always wider than the screen and the loop never shows a gap
 const MIN_ITEMS = 8;
 const row = list.length ? Array.from({ length: Math.ceil(MIN_ITEMS / list.length) }, () => list).flat() : [];
 
 function Item({ s }) {
-  const inner = s.logo
-    ? <img src={`${import.meta.env.BASE_URL}${s.logo}`} alt={s.name} loading="lazy" />
-    : <span className={s.placeholder ? "sponsor-placeholder" : undefined}>{s.name}</span>;
-  return s.href ? <a href={s.href} target="_blank" rel="noopener">{inner}</a> : inner;
+  if (s.logo) {
+    const inner = <img src={`${import.meta.env.BASE_URL}${s.logo}`} alt={s.name} loading="lazy" />;
+    return s.href ? <a href={s.href} target="_blank" rel="noopener">{inner}</a> : inner;
+  }
+  return (
+    <span className="sponsor-spec">
+      <span>{s.name}</span>
+      {s.tag && <span className="sponsor-spec-tag">{s.tag}</span>}
+    </span>
+  );
 }
 
 function Row({ hidden }) {
