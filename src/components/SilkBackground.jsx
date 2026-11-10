@@ -44,7 +44,8 @@ export default function SilkBackground({ onUnsupported }) {
     gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
 
     const U = (n) => gl.getUniformLocation(prog, n);
-    const uRes = U("uRes"), uDpr = U("uDpr"), uTime = U("uTime"), uOpen = U("uOpen"), uMouse = U("uMouse"), uMouseOn = U("uMouseOn");
+    const uRes = U("uRes"), uDpr = U("uDpr"), uTime = U("uTime"), uOpen = U("uOpen"), uMouse = U("uMouse"), uMouseOn = U("uMouseOn"), uScroll = U("uScroll");
+    let scroll = window.scrollY;
 
     const reduce = prefersReducedMotion();
     let W = 0, H = 0, dpr = 1;
@@ -86,6 +87,9 @@ export default function SilkBackground({ onUnsupported }) {
       gl.uniform1f(uOpen, open);
       gl.uniform2f(uMouse, mouse.sx, mouse.sy);
       gl.uniform1f(uMouseOn, mouse.on);
+      // ease toward the real scroll so the gas lags behind the page like real mist
+      scroll += (window.scrollY - scroll) * (reduce ? 1 : 0.06);
+      gl.uniform1f(uScroll, reduce ? 0 : scroll / Math.max(1, window.innerHeight));
       gl.drawArrays(gl.TRIANGLES, 0, 3);
     };
 
