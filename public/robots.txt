@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Signals for AI answer engines and crawlers (Search & Citation permitted, Bulk Training declined)
+Content-Signal: search=yes, ai-input=yes, ai-train=no
+
+Sitemap: https://lilafold.io/sitemap.xml
