@@ -4,6 +4,7 @@ import Blossoms from "./components/Blossoms.jsx";
 import Nav from "./components/Nav.jsx";
 import SubscribeForm from "./components/SubscribeForm.jsx";
 import Footer from "./components/Footer.jsx";
+import CookieBanner from "./components/CookieBanner.jsx";
 
 export default function App() {
   const [noGl, setNoGl] = useState(false);
@@ -29,6 +30,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <CookieBanner />
     </div>
   );
 }

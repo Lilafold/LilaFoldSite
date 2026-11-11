@@ -5,3 +5,5 @@ dist
 .env*.local
 .claude/
 legacy/
+# generated at build time by scripts/fetch-stats.mjs
+public/stats.json

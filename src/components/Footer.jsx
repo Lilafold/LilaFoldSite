@@ -30,10 +30,16 @@ const socials = [
   },
 ];
 
+import { openCookieSettings } from "./CookieBanner.jsx";
+
 export default function Footer() {
   return (
     <footer className="reveal" style={{ "--i": 4 }}>
-      <span>&copy; {new Date().getFullYear()} LilaFold Labs</span>
+      <span>
+        &copy; {new Date().getFullYear()} LilaFold Labs
+        <span aria-hidden="true"> &middot; </span>
+        <button type="button" className="link-button" onClick={openCookieSettings}>Cookie settings</button>
+      </span>
       <nav className="socials" aria-label="LilaFold on social media">
         {socials.map((s) => (
           <a key={s.label} href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
