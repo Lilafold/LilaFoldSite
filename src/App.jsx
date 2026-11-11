@@ -3,6 +3,7 @@ import SilkBackground from "./components/SilkBackground.jsx";
 import Blossoms from "./components/Blossoms.jsx";
 import Nav from "./components/Nav.jsx";
 import Footer from "./components/Footer.jsx";
+import CookieBanner from "./components/CookieBanner.jsx";
 import Hero from "./sections/Hero.jsx";
 import Sponsors from "./sections/Sponsors.jsx";
 import Manifesto from "./sections/Manifesto.jsx";
@@ -58,6 +59,7 @@ export default function App() {
       </main>
 
       <Footer />
+      <CookieBanner />
     </div>
   );
 }

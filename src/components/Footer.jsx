@@ -1,4 +1,5 @@
 import Logo from "./Logo.jsx";
+import { openCookieSettings } from "./CookieBanner.jsx";
 
 const socials = [
   {
@@ -97,7 +98,11 @@ export default function Footer({ home = true }) {
       </div>
       {/* decorative oversized wordmark that sinks into the smoke */}
       <p className="footer-word" aria-hidden="true">LilaFold</p>
-      <p className="footer-base">&copy; {new Date().getFullYear()} LilaFold Labs</p>
+      <p className="footer-base">
+        &copy; {new Date().getFullYear()} LilaFold Labs
+        <span aria-hidden="true"> &middot; </span>
+        <button type="button" className="link-button" onClick={openCookieSettings}>Cookie settings</button>
+      </p>
     </footer>
   );
 }

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import SilkBackground from "../components/SilkBackground.jsx";
 import Nav from "../components/Nav.jsx";
 import Footer from "../components/Footer.jsx";
+import CookieBanner from "../components/CookieBanner.jsx";
 import SubscribeForm from "../components/SubscribeForm.jsx";
 import { ArrowRight } from "../components/Icons.jsx";
 import { useSpotlight } from "../lib/useSpotlight.js";
@@ -202,6 +203,7 @@ export default function BlogApp() {
         )}
       </main>
       <Footer home={false} />
+      <CookieBanner />
     </div>
   );
 }

@@ -1,3 +1,5 @@
+import "@fontsource-variable/funnel-display";
+import "@fontsource-variable/funnel-sans";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import BlogApp from "./BlogApp.jsx";

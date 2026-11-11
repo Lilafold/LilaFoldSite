@@ -1,50 +1,24 @@
 import { useEffect, useState } from "react";
 
-const GITHUB_OWNER = "Lilafold";
-const HF_AUTHOR = "LilaFold";
-const CACHE_KEY = "lf-stats-v1";
-const CACHE_MS = 30 * 60 * 1000;
+// The counts are fetched at build time by scripts/fetch-stats.mjs and served from
+// our own domain, so loading the page never contacts GitHub or Hugging Face.
+const URL = `${import.meta.env.BASE_URL}stats.json`;
 
-const readCache = () => {
-  try {
-    const c = JSON.parse(localStorage.getItem(CACHE_KEY) || "null");
-    return c && Date.now() - c.t < CACHE_MS ? c : null;
-  } catch {
-    return null;
-  }
-};
-
-/** Live Hugging Face downloads (all-time, summed across models) and GitHub stars (summed across public repos). */
+/** Hugging Face downloads (all-time, summed across models) and GitHub stars (summed across public repos). */
 export function useCommunityStats() {
-  const [stats, setStats] = useState(() => readCache() ?? { hf: 0, gh: 0 });
+  const [stats, setStats] = useState({ hf: 0, gh: 0 });
 
   useEffect(() => {
-    if (readCache()) return;
     let cancelled = false;
-
-    const hf = fetch(`https://huggingface.co/api/models?author=${HF_AUTHOR}&limit=1000&expand[]=downloadsAllTime&expand[]=downloads`)
-      .then((r) => (r.ok ? r.json() : []))
-      .then((list) => list.reduce((sum, m) => sum + (m.downloadsAllTime ?? m.downloads ?? 0), 0))
-      .catch(() => 0);
-
-    const gh = fetch(`https://api.github.com/users/${GITHUB_OWNER}/repos?per_page=100&type=owner`, {
-      headers: { Accept: "application/vnd.github+json" },
-    })
-      .then((r) => (r.ok ? r.json() : []))
-      .then((list) => list.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0))
-      .catch(() => 0);
-
-    Promise.all([hf, gh]).then(([hfCount, ghCount]) => {
-      if (cancelled) return;
-      setStats({ hf: hfCount, gh: ghCount });
-      try {
-        localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), hf: hfCount, gh: ghCount }));
-      } catch {
-        /* storage unavailable: fine */
-      }
-    });
-
-    return () => { cancelled = true; };
+    fetch(URL)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((s) => {
+        if (!cancelled && s) setStats({ hf: s.hf || 0, gh: s.gh || 0 });
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return stats;
