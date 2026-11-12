@@ -9,6 +9,7 @@ import { useSpotlight } from "../lib/useSpotlight.js";
 import Cover from "./Cover.jsx";
 import { posts, formatDate } from "./posts.js";
 import { renderMarkdown } from "./markdown.js";
+import { applyIndexSeo, applyPostSeo, applyNotFoundSeo } from "./seo.js";
 
 const BLOG = `${import.meta.env.BASE_URL}blog/`;
 const postHref = (slug) => `${BLOG}?post=${encodeURIComponent(slug)}`;
@@ -177,8 +178,11 @@ export default function BlogApp() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
+  // each post is its own indexable page: canonical, description and share-card text follow the open post
   useEffect(() => {
-    document.title = post ? `${post.title} | LilaFold` : slug ? "Post not found | LilaFold" : "Blog | LilaFold";
+    if (post) applyPostSeo(post);
+    else if (slug) applyNotFoundSeo();
+    else applyIndexSeo();
   }, [post, slug]);
 
   return (
