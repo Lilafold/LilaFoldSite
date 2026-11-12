@@ -1,9 +1,8 @@
 // Per-page head tags for the blog. The static tags in blog/index.html describe the
 // blog index; when a post is open, these functions point the canonical link, the
-// description and the share-card text at that post instead, so each post is its
-// own indexable page. Googlebot renders JavaScript, so it reads the updated tags.
-// (Crawlers that do not run JavaScript, such as most link-preview bots, still see
-// the blog-index card from the static HTML.)
+// description and the share-card text at that post instead. In production each post
+// also has its own pre-built page (see vite.config.js) with these tags already in the
+// HTML; these functions keep them correct when navigating between posts in the browser.
 
 const ORIGIN = "https://lilafold.io";
 const BASE = import.meta.env.BASE_URL;
@@ -44,8 +43,8 @@ const jsonLd = (id, data) => {
   if (!data) el.remove();
 };
 
-/** The address a post has on the live site, e.g. https://lilafold.io/blog/?post=hello-lilafold */
-export const postUrl = (slug) => `${ORIGIN}${BASE}blog/?post=${encodeURIComponent(slug)}`;
+/** The address a post has on the live site, e.g. https://lilafold.io/blog/hello-lilafold/ */
+export const postUrl = (slug) => `${ORIGIN}${BASE}blog/${encodeURIComponent(slug)}/`;
 export const blogUrl = `${ORIGIN}${BASE}blog/`;
 
 export function applyIndexSeo() {
@@ -96,7 +95,7 @@ export function applyPostSeo(post) {
   });
 }
 
-/** An unknown ?post= address is not a page: keep it out of the index. */
+/** An unknown post address is not a page: keep it out of the index. */
 export function applyNotFoundSeo() {
   document.title = "Post not found | LilaFold";
   meta("name", "robots", "noindex, follow");

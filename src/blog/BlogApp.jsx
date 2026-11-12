@@ -12,7 +12,17 @@ import { renderMarkdown } from "./markdown.js";
 import { applyIndexSeo, applyPostSeo, applyNotFoundSeo } from "./seo.js";
 
 const BLOG = `${import.meta.env.BASE_URL}blog/`;
-const postHref = (slug) => `${BLOG}?post=${encodeURIComponent(slug)}`;
+const postHref = (slug) => `${BLOG}${encodeURIComponent(slug)}/`;
+
+// the open post comes from the path (/blog/<post-name>/); old ?post=<name> links still work
+const readSlug = () => {
+  const path = window.location.pathname;
+  if (path.startsWith(BLOG)) {
+    const rest = decodeURIComponent(path.slice(BLOG.length)).replace(/\/+$/, "");
+    if (rest && rest !== "index.html") return rest;
+  }
+  return new URLSearchParams(window.location.search).get("post");
+};
 
 function Byline({ post }) {
   return (
@@ -158,13 +168,14 @@ export default function BlogApp() {
   const handleNoGl = useCallback(() => setNoGl(true), []);
   useSpotlight();
 
-  const [slug, setSlug] = useState(() => new URLSearchParams(window.location.search).get("post"));
+  const [slug, setSlug] = useState(readSlug);
   const post = slug ? posts.find((p) => p.slug === slug) : null;
 
   useEffect(() => {
-    const onPop = () => {
-      setSlug(new URLSearchParams(window.location.search).get("post"));
-    };
+    // an old ?post=<name> address is rewritten to /blog/<name>/ without adding a history entry
+    const legacy = new URLSearchParams(window.location.search).get("post");
+    if (legacy) window.history.replaceState({}, "", postHref(legacy));
+    const onPop = () => setSlug(readSlug());
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
@@ -172,7 +183,7 @@ export default function BlogApp() {
   const handleNavigate = useCallback((nextSlug, e) => {
     if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0)) return;
     if (e) e.preventDefault();
-    const url = nextSlug ? `${BLOG}?post=${encodeURIComponent(nextSlug)}` : BLOG;
+    const url = nextSlug ? postHref(nextSlug) : BLOG;
     window.history.pushState({}, "", url);
     setSlug(nextSlug || null);
     window.scrollTo({ top: 0, behavior: "smooth" });

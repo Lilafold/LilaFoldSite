@@ -12,7 +12,7 @@
 //   featured: true                (optional, one post)
 //   ---
 //
-// The file name (without .md) is the post's address: /blog/?post=file-name
+// The file name (without .md) is the post's address: /blog/file-name/
 
 const files = import.meta.glob("../content/blog/*.md", { query: "?raw", import: "default", eager: true });
 
