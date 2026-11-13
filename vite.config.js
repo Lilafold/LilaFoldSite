@@ -63,13 +63,26 @@ function blogPages() {
 
       const blog = bundle["blog/index.html"];
       if (blog && typeof blog.source === "string") {
+        const template = blog.source;
+        // Pre-render blog post listing into the blog index page for crawlers
+        const postList = posts
+          .map(
+            (p) =>
+              `<article><h2><a href="${ORIGIN}${base}blog/${p.slug}/">${esc(p.title)}</a></h2><time datetime="${p.date}">${p.date}</time><p>${esc(p.excerpt)}</p></article>`
+          )
+          .join("\n");
+        bundle["blog/index.html"].source = template.replace(
+          /<div id="root"><\/div>/,
+          `<div id="root"><main><h1>LilaFold Blog</h1><p>Research notes and news from the LilaFold team.</p>${postList}</main></div>`
+        );
+
         for (const p of posts) {
           const url = `${ORIGIN}${base}blog/${p.slug}/`;
           const set = (html, re, to) => {
             if (!re.test(html)) throw new Error(`blog page: pattern not found: ${re}`);
             return html.replace(re, () => to);
           };
-          let html = blog.source;
+          let html = template;
           html = set(html, /<title>[^<]*<\/title>/, `<title>${esc(p.title)} | LilaFold</title>`);
           html = set(html, /<meta name="description" content="[^"]*">/, `<meta name="description" content="${esc(p.excerpt)}">`);
           html = set(html, /<link rel="canonical" href="[^"]*">/, `<link rel="canonical" href="${url}">`);
@@ -107,7 +120,7 @@ function blogPages() {
           html = set(
             html,
             /<div id="root"><\/div>/,
-            `<div id="root"><article style="display:none"><h1>${esc(p.title)}</h1><p>${esc(p.excerpt)}</p>${renderMarkdown(p.body)}</article></div>`
+            `<div id="root"><article><h1>${esc(p.title)}</h1><p>${esc(p.excerpt)}</p>${renderMarkdown(p.body)}</article></div>`
           );
           this.emitFile({ type: "asset", fileName: `blog/${p.slug}/index.html`, source: html });
         }

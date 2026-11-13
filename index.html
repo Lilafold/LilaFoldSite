@@ -29,6 +29,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>LilaFold: Small models for serious work</title>
 <meta name="description" content="Specialised AI models small enough to run privately, in our cloud first and on modular hardware later. Join early access.">
+<meta name="keywords" content="LilaFold, Lala L1, small models, specialised AI, private AI, NPU hardware, edge AI, cybersecurity AI">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="theme-color" content="#08070b">
 
@@ -85,13 +86,59 @@
         "@type": "ImageObject",
         "url": "https://lilafold.io/logo.png"
       },
-      "knowsAbout": ["Artificial Intelligence", "Neural Processing Units", "Private AI"],
+      "knowsAbout": ["Artificial Intelligence", "Neural Processing Units", "Private AI", "Small Language Models"],
       "sameAs": [
         "https://x.com/lilafold",
         "https://www.instagram.com/lilafold/",
         "https://www.linkedin.com/company/lilafold",
         "https://github.com/Lilafold",
         "https://huggingface.co/LilaFold"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://lilafold.io/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is early access?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A first group of people who get API keys before the public launch. Leave your email and we will write when the cloud opens, with a discount on your first use."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When does it open?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "We have not set a date. We are an early-stage company and our first model is still in development. People on the list hear first."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What will it cost?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Usage-based pricing and monthly subscriptions, with a free tier for prototyping. Exact prices will be published at launch."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which model comes first?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Cybersecurity: log triage, threat explanations and alert summaries. Freight and logistics, software engineering, forecasting and research workflows are the fields we are exploring next."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Can I buy the hardware?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Not yet. The modules are in research and the pictures on this page are concept illustrations. We plan to validate a two-module prototype first, then run pilots with early partners."
+          }
+        }
       ]
     }
   ]
@@ -102,10 +149,58 @@
 </head>
 <body>
 <div id="root">
-  <!-- crawler-readable summary; React replaces it on load -->
-  <main style="display:none">
-    <h1>Small models. Serious work.</h1>
-    <p>AI models trained for one job each, small enough to run privately: in our cloud first, then on modular hardware you own.</p>
+  <!-- Semantic fallback for crawlers & non-JS; React replaces on mount -->
+  <header>
+    <a href="https://lilafold.io/">LilaFold</a>
+    <nav>
+      <a href="#models">Models</a>
+      <a href="#platform">Platform</a>
+      <a href="#hardware">Hardware</a>
+      <a href="#roadmap">Roadmap</a>
+      <a href="#team">Team</a>
+      <a href="/blog/">Blog</a>
+      <a href="#join">Early Access</a>
+    </nav>
+  </header>
+  <main>
+    <section>
+      <h1>Small models. Serious work.</h1>
+      <p>AI models trained for one job each, small enough to run privately: in our cloud first, then on modular hardware you own.</p>
+      <p><a href="#join">Join early access</a> | <a href="/blog/">Read our research</a></p>
+    </section>
+    <section id="models">
+      <h2>Built for the job, not for everything</h2>
+      <p>General models are huge because they try to know everything. Ours are trained for one field each, so they can be small, fast and cheap to run.</p>
+      <ul>
+        <li><strong>Depth over breadth:</strong> A model trained for one field spends its capacity where it counts.</li>
+        <li><strong>Efficient per token:</strong> Fewer parameters mean less memory and energy for every answer.</li>
+        <li><strong>Private by design:</strong> Small enough to run on hardware you control, not only in someone else's data centre.</li>
+      </ul>
+      <p>In development: Cybersecurity (log triage, threat explanations, alert summaries). Exploring next: freight and logistics, software engineering, forecasting, and research workflows.</p>
+    </section>
+    <section id="platform">
+      <h2>LilaFold Cloud</h2>
+      <p>Our models behind a simple API. Pay per request or subscribe. No GPUs to rent or manage.</p>
+    </section>
+    <section id="hardware">
+      <h2>Modular NPU Hardware</h2>
+      <p>NPU modules that connect together. Start with one base unit and add more as your workload grows. NPUs (neural processing units) are chips built specifically for AI as a lower-power, lower-cost alternative to GPUs.</p>
+    </section>
+    <section id="faq">
+      <h2>Frequently Asked Questions</h2>
+      <dl>
+        <dt>What is early access?</dt>
+        <dd>A first group of people who get API keys before the public launch. Leave your email and we will write when the cloud opens, with a discount on your first use.</dd>
+        <dt>When does it open?</dt>
+        <dd>We are an early-stage company and our first model is still in development. People on the list hear first.</dd>
+        <dt>What will it cost?</dt>
+        <dd>Usage-based pricing and monthly subscriptions, with a free tier for prototyping. Exact prices will be published at launch.</dd>
+        <dt>Which model comes first?</dt>
+        <dd>Cybersecurity: log triage, threat explanations and alert summaries. Freight and logistics, software engineering, forecasting and research workflows are the fields we are exploring next.</dd>
+        <dt>Can I buy the hardware?</dt>
+        <dd>Not yet. The modules are in research and the pictures on this page are concept illustrations. We plan to validate a two-module prototype first, then run pilots with early partners.</dd>
+      </dl>
+    </section>
   </main>
 </div>
 <noscript><p style="color:#f5f2fb;text-align:center;padding:40px;font-family:sans-serif">LilaFold builds small, specialised AI models. Please enable JavaScript to see the full site and join early access.</p></noscript>
