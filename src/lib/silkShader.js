@@ -6,6 +6,7 @@ export const FRAG = `
 precision highp float;
 uniform vec2 uRes;
 uniform float uDpr, uTime, uOpen, uMouseOn;
+uniform float uScroll; // page scroll in screen heights, smoothed
 uniform vec2 uMouse;
 float hash(vec2 p){ p = fract(p * vec2(123.34, 456.21)); p += dot(p, p + 45.32); return fract(p.x * p.y); }
 float h2(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453123); }
@@ -24,16 +25,18 @@ float fbm(vec2 p){
 void main(){
   vec2 frag = gl_FragCoord.xy / uDpr;
   vec2 uv = (frag - 0.5 * uRes) / uRes.y;
-  float t = uTime;
+  // scrolling stirs the gas a little and drifts it up slower than the page (parallax)
+  float t = uTime + uScroll * 9.0;
+  vec2 wv = uv + vec2(0.0, -uScroll * 0.4);
 
   // the sheet settles from slightly closer in as it unfolds
-  vec2 p = mat2(0.8, -0.6, 0.6, 0.8) * uv * 1.6 * mix(1.3, 1.0, uOpen) + vec2(3.1, 7.4);
+  vec2 p = mat2(0.8, -0.6, 0.6, 0.8) * wv * 1.6 * mix(1.3, 1.0, uOpen) + vec2(3.1, 7.4);
   vec2 q = vec2(fbm(p + vec2(0.0, t * 0.035)), fbm(p + vec2(5.2, 1.3) - vec2(t * 0.03, 0.0)));
   vec2 r = vec2(fbm(p + 1.8 * q + vec2(1.7, 9.2) + t * 0.022), fbm(p + 1.8 * q + vec2(8.3, 2.8) - t * 0.018));
   float f = fbm(p + 2.0 * r);
 
   // silk: long soft folds running diagonally, bent by the warp
-  float fold = sin((uv.x * 0.9 - uv.y * 1.1) * 3.0 + f * 5.5 + t * 0.1);
+  float fold = sin((wv.x * 0.9 - wv.y * 1.1) * 3.0 + f * 5.5 + t * 0.1);
   float sheen = pow(0.5 + 0.5 * fold, 6.0);
   float body = smoothstep(0.35, 0.95, f);
 

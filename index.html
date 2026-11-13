@@ -1,9 +1,9 @@
 <!doctype html>
 <html lang="en">
 <head>
-<!-- Google tag (GTM-5L5TTJJ9). Consent mode v2: everything starts denied and
-     gtm.js is only fetched once the visitor accepts analytics in the cookie
-     banner (stored as lf-consent). -->
+<!-- Google tag (GTM-TRTQ4D6N): Google Analytics via Google Tag Manager.
+     Consent mode v2: everything starts denied and gtm.js is only fetched once the
+     visitor accepts analytics in the cookie banner (stored as lf-consent). -->
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -14,22 +14,21 @@
     analytics_storage: 'denied'
   });
   gtag('js', new Date());
-  gtag('config', 'GTM-5L5TTJJ9');
   window.lfLoadAnalytics = function () {
     gtag('consent', 'update', { analytics_storage: 'granted' });
     if (window.lfGtmLoaded) return;
     window.lfGtmLoaded = true;
     var s = document.createElement('script');
     s.async = true;
-    s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-5L5TTJJ9';
+    s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-TRTQ4D6N';
     document.head.appendChild(s);
   };
   try { if (localStorage.getItem('lf-consent') === 'granted') window.lfLoadAnalytics(); } catch (e) {}
 </script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>LilaFold: Something is unfolding</title>
-<meta name="description" content="Subscribe to be the first to know about all our events and get a discount on your first use.">
+<title>LilaFold: Small models for serious work</title>
+<meta name="description" content="Specialised AI models small enough to run privately, in our cloud first and on modular hardware later. Join early access.">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="theme-color" content="#08070b">
 
@@ -41,13 +40,13 @@
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="LilaFold">
 <meta property="og:url" content="https://lilafold.io/">
-<meta property="og:title" content="LilaFold: Something is unfolding">
-<meta property="og:description" content="Subscribe to be the first to know about all our events and get a discount on your first use.">
-<meta property="og:image" content="https://lilafold.io/logo.png">
+<meta property="og:title" content="LilaFold: Small models for serious work">
+<meta property="og:description" content="Specialised AI models small enough to run privately, in our cloud first and on modular hardware later. Join early access.">
+<meta property="og:image" content="https://lilafold.io/og.png">
 <meta property="og:image:type" content="image/png">
-<meta property="og:image:width" content="786">
-<meta property="og:image:height" content="786">
-<meta property="og:image:alt" content="LilaFold emblem">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LilaFold: Small models. Serious work.">
 <meta property="og:locale" content="en_US">
 
 <!-- Twitter / X -->
@@ -55,10 +54,10 @@
 <meta name="twitter:site" content="@lilafold">
 <meta name="twitter:creator" content="@lilafold">
 <meta name="twitter:url" content="https://lilafold.io/">
-<meta name="twitter:title" content="LilaFold: Something is unfolding">
-<meta name="twitter:description" content="Subscribe to be the first to know about all our events and get a discount on your first use.">
-<meta name="twitter:image" content="https://lilafold.io/logo.png">
-<meta name="twitter:image:alt" content="LilaFold emblem">
+<meta name="twitter:title" content="LilaFold: Small models for serious work">
+<meta name="twitter:description" content="Specialised AI models small enough to run privately, in our cloud first and on modular hardware later. Join early access.">
+<meta name="twitter:image" content="https://lilafold.io/og.png">
+<meta name="twitter:image:alt" content="LilaFold: Small models. Serious work.">
 
 <!-- Structured Data (JSON-LD) -->
 <script type="application/ld+json">
@@ -70,26 +69,29 @@
       "@id": "https://lilafold.io/#website",
       "url": "https://lilafold.io/",
       "name": "LilaFold",
-      "description": "Subscribe to be the first to know about all our events and get a discount on your first use.",
+      "description": "Specialised AI models small enough to run privately, in our cloud first and on modular hardware later.",
       "publisher": {
         "@id": "https://lilafold.io/#organization"
       }
     },
     {
-      "@type": "Organization",
+      "@type": "ResearchOrganization",
       "@id": "https://lilafold.io/#organization",
       "name": "LilaFold Labs",
       "alternateName": "LilaFold",
       "url": "https://lilafold.io/",
+      "description": "An early-stage research company building small, specialised AI models and modular NPU hardware to run them privately.",
       "logo": {
         "@type": "ImageObject",
         "url": "https://lilafold.io/logo.png"
       },
+      "knowsAbout": ["Artificial Intelligence", "Neural Processing Units", "Private AI"],
       "sameAs": [
         "https://x.com/lilafold",
         "https://www.instagram.com/lilafold/",
         "https://www.linkedin.com/company/lilafold",
-        "https://github.com/Lilafold"
+        "https://github.com/Lilafold",
+        "https://huggingface.co/LilaFold"
       ]
     }
   ]
@@ -100,12 +102,13 @@
 </head>
 <body>
 <div id="root">
+  <!-- crawler-readable summary; React replaces it on load -->
   <main style="display:none">
-    <h1>Something is unfolding.</h1>
-    <p>Subscribe to be the first to know about all our events and get a discount on your first use.</p>
+    <h1>Small models. Serious work.</h1>
+    <p>AI models trained for one job each, small enough to run privately: in our cloud first, then on modular hardware you own.</p>
   </main>
 </div>
-<noscript><p style="color:#f5f2fb;text-align:center;padding:40px;font-family:sans-serif">LilaFold is coming soon. Please enable JavaScript to subscribe.</p></noscript>
+<noscript><p style="color:#f5f2fb;text-align:center;padding:40px;font-family:sans-serif">LilaFold builds small, specialised AI models. Please enable JavaScript to see the full site and join early access.</p></noscript>
 <script type="module" src="/src/main.jsx"></script>
 </body>
 </html>

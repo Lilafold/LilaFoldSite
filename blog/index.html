@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<!-- Google tag (GTM-TRTQ4D6N): Google Analytics via Google Tag Manager.
+     Consent mode v2: everything starts denied and gtm.js is only fetched once the
+     visitor accepts analytics in the cookie banner (stored as lf-consent). -->
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied',
+    analytics_storage: 'denied'
+  });
+  gtag('js', new Date());
+  window.lfLoadAnalytics = function () {
+    gtag('consent', 'update', { analytics_storage: 'granted' });
+    if (window.lfGtmLoaded) return;
+    window.lfGtmLoaded = true;
+    var s = document.createElement('script');
+    s.async = true;
+    s.src = 'https://www.googletagmanager.com/gtm.js?id=GTM-TRTQ4D6N';
+    document.head.appendChild(s);
+  };
+  try { if (localStorage.getItem('lf-consent') === 'granted') window.lfLoadAnalytics(); } catch (e) {}
+</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blog | LilaFold</title>
+<meta name="description" content="Research notes and news from the LilaFold team: small specialised models, private AI and modular NPU hardware.">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#08070b">
+
+<link rel="canonical" href="https://lilafold.io/blog/">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="apple-touch-icon" href="/logo.png">
+
+<!-- Open Graph / Facebook / LinkedIn.
+     These tags describe the blog index. Each post at /blog/<post-name>/ gets its own
+     copy of this page at build time (see vite.config.js) with that post's tags. -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="LilaFold">
+<meta property="og:url" content="https://lilafold.io/blog/">
+<meta property="og:title" content="LilaFold Blog: research notes and news">
+<meta property="og:description" content="Research notes and news from the LilaFold team: small specialised models, private AI and modular NPU hardware.">
+<meta property="og:image" content="https://lilafold.io/og-blog.png">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="LilaFold Blog: research notes and news">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter / X -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@lilafold">
+<meta name="twitter:creator" content="@lilafold">
+<meta name="twitter:url" content="https://lilafold.io/blog/">
+<meta name="twitter:title" content="LilaFold Blog: research notes and news">
+<meta name="twitter:description" content="Research notes and news from the LilaFold team: small specialised models, private AI and modular NPU hardware.">
+<meta name="twitter:image" content="https://lilafold.io/og-blog.png">
+<meta name="twitter:image:alt" content="LilaFold Blog: research notes and news">
+
+<!-- Structured Data (JSON-LD) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Blog",
+      "@id": "https://lilafold.io/blog/#blog",
+      "url": "https://lilafold.io/blog/",
+      "name": "LilaFold Blog",
+      "description": "Research notes and news from the LilaFold team.",
+      "inLanguage": "en",
+      "publisher": {
+        "@id": "https://lilafold.io/#organization"
+      }
+    },
+    {
+      "@type": "ResearchOrganization",
+      "@id": "https://lilafold.io/#organization",
+      "name": "LilaFold Labs",
+      "alternateName": "LilaFold",
+      "url": "https://lilafold.io/",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://lilafold.io/logo.png"
+      },
+      "knowsAbout": ["Artificial Intelligence", "Neural Processing Units", "Private AI"],
+      "sameAs": [
+        "https://x.com/lilafold",
+        "https://www.instagram.com/lilafold/",
+        "https://www.linkedin.com/company/lilafold",
+        "https://github.com/Lilafold",
+        "https://huggingface.co/LilaFold"
+      ]
+    }
+  ]
+}
+</script>
+
+<!-- fonts are self-hosted (bundled from @fontsource), so no request goes to Google -->
+</head>
+<body>
+<div id="root"></div>
+<noscript><p style="color:#f5f2fb;text-align:center;padding:40px;font-family:sans-serif">Please enable JavaScript to read the LilaFold blog.</p></noscript>
+<script type="module" src="/src/blog/main.jsx"></script>
+</body>
+</html>

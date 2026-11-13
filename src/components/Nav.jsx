@@ -1,4 +1,6 @@
+import { useEffect, useState } from "react";
 import Logo from "./Logo.jsx";
+import { ArrowRight } from "./Icons.jsx";
 import { useCommunityStats, formatCount } from "../lib/useCommunityStats.js";
 
 const HuggingFaceIcon = () => (
@@ -45,16 +47,76 @@ function StatChip({ href, label, icon, statIcon, count, unit }) {
   );
 }
 
-export default function Nav() {
+const BASE = import.meta.env.BASE_URL;
+const sectionLinks = [
+  { href: "#models", label: "Models" },
+  { href: "#platform", label: "Platform" },
+  { href: "#hardware", label: "Hardware" },
+  { href: "#roadmap", label: "Roadmap" },
+  { href: "#team", label: "Team" },
+];
+const blogLink = { href: `${BASE}blog/`, label: "Blog", blog: true };
+
+// `home` is false on other pages (the blog): section links then lead back to the landing page
+export default function Nav({ home = true }) {
+  const links = [...sectionLinks.map((l) => (home ? l : { ...l, href: `${BASE}${l.href}` })), blogLink];
+  const homeHref = home ? "#top" : BASE;
+  const joinHref = home ? "#join" : `${BASE}#join`;
   const { hf, gh } = useCommunityStats();
+  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState("");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  // scrollspy: mark the section currently crossing the upper third of the screen
+  useEffect(() => {
+    const sections = sectionLinks.map((l) => document.querySelector(l.href)).filter(Boolean);
+    if (!("IntersectionObserver" in window) || !sections.length) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          const id = `#${e.target.id}`;
+          if (e.isIntersecting) setActive(id);
+          // leaving a section without entering another (FAQ, signup, footer) clears the highlight
+          else setActive((cur) => (cur === id ? "" : cur));
+        }
+      },
+      { rootMargin: "-30% 0px -60% 0px" }
+    );
+    sections.forEach((s) => io.observe(s));
+    return () => io.disconnect();
+  }, []);
+
+  const close = () => setOpen(false);
+  const current = (l) => (l.blog ? (home ? undefined : "page") : active === l.href ? "location" : undefined);
 
   return (
-    <header className="nav reveal" style={{ "--i": 0 }}>
+    <header className={`nav reveal${open ? " open" : ""}${scrolled ? " scrolled" : ""}`} style={{ "--i": 0 }}>
       <div className="nav-bar">
-        <a className="brand" href="/" aria-label="LilaFold home">
+        <a className="brand" href={homeHref} aria-label="LilaFold home" onClick={close}>
           <Logo />
           <span className="word">LilaFold</span>
         </a>
+        <nav className="nav-links" aria-label="Sections">
+          {links.map((l) => (
+            <a key={l.href} href={l.href} onClick={close} aria-current={current(l)}>
+              {l.label}
+            </a>
+          ))}
+        </nav>
         <div className="nav-right">
           <StatChip
             href="https://huggingface.co/LilaFold"
@@ -72,8 +134,31 @@ export default function Nav() {
             count={gh}
             unit="stars"
           />
+          <a className="nav-cta" href={joinHref} onClick={close}>
+            <span>
+              Join<span className="cta-long"> early access</span>
+            </span>
+            <ArrowRight className="nav-cta-arrow" />
+          </a>
+          <button
+            type="button"
+            className="menu-btn"
+            aria-expanded={open}
+            aria-controls="mobile-menu"
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((v) => !v)}
+          >
+            <span /><span />
+          </button>
         </div>
       </div>
+      <nav id="mobile-menu" className="mobile-menu" aria-label="Sections" hidden={!open}>
+        {links.map((l) => (
+          <a key={l.href} href={l.href} onClick={close} aria-current={current(l)}>
+            {l.label}
+          </a>
+        ))}
+      </nav>
     </header>
   );
 }

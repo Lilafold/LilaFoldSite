@@ -1,3 +1,6 @@
+import Logo from "./Logo.jsx";
+import { openCookieSettings } from "./CookieBanner.jsx";
+
 const socials = [
   {
     label: "X",
@@ -30,23 +33,76 @@ const socials = [
   },
 ];
 
-import { openCookieSettings } from "./CookieBanner.jsx";
+const columns = [
+  {
+    title: "Product",
+    links: [
+      { label: "Models", href: "#models" },
+      { label: "Platform", href: "#platform" },
+      { label: "Hardware", href: "#hardware" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "Roadmap", href: "#roadmap" },
+      { label: "Team", href: "#team" },
+      { label: "Questions", href: "#faq" },
+      { label: "Blog", href: "blog/", page: true },
+      { label: "Early access", href: "#join" },
+    ],
+  },
+  {
+    title: "Community",
+    links: [
+      { label: "Hugging Face", href: "https://huggingface.co/LilaFold", external: true },
+      { label: "GitHub", href: "https://github.com/Lilafold", external: true },
+    ],
+  },
+];
 
-export default function Footer() {
+const BASE = import.meta.env.BASE_URL;
+// section links are page anchors on the landing page and full links elsewhere
+const resolve = (l, home) => (l.external ? l.href : l.page || !home ? `${BASE}${l.href}` : l.href);
+
+export default function Footer({ home = true }) {
   return (
-    <footer className="reveal" style={{ "--i": 4 }}>
-      <span>
+    <footer className="site-footer">
+      <div className="footer-top">
+        <div className="footer-brand">
+          <a className="brand" href={home ? "#top" : BASE} aria-label="LilaFold home">
+            <Logo />
+            <span className="word">LilaFold</span>
+          </a>
+          <p>Small models for serious work.</p>
+          <nav className="socials" aria-label="LilaFold on social media">
+            {socials.map((s) => (
+              <a key={s.label} href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
+                {s.icon}
+              </a>
+            ))}
+          </nav>
+        </div>
+        {columns.map((c) => (
+          <nav key={c.title} className="footer-col" aria-label={c.title}>
+            <h2>{c.title}</h2>
+            <ul>
+              {c.links.map((l) => (
+                <li key={l.label}>
+                  <a href={resolve(l, home)} {...(l.external ? { target: "_blank", rel: "noopener" } : {})}>{l.label}</a>
+                </li>
+              ))}
+            </ul>
+          </nav>
+        ))}
+      </div>
+      {/* decorative oversized wordmark that sinks into the smoke */}
+      <p className="footer-word" aria-hidden="true">LilaFold</p>
+      <p className="footer-base">
         &copy; {new Date().getFullYear()} LilaFold Labs
         <span aria-hidden="true"> &middot; </span>
         <button type="button" className="link-button" onClick={openCookieSettings}>Cookie settings</button>
-      </span>
-      <nav className="socials" aria-label="LilaFold on social media">
-        {socials.map((s) => (
-          <a key={s.label} href={s.href} target="_blank" rel="noopener" aria-label={s.label}>
-            {s.icon}
-          </a>
-        ))}
-      </nav>
+      </p>
     </footer>
   );
 }
