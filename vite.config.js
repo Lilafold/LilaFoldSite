@@ -38,6 +38,7 @@ function blogPages() {
           date: meta.date || "",
           author: meta.author || "LilaFold team",
           tags: (meta.tags || "").split(",").map((t) => t.trim()).filter(Boolean),
+          featured: meta.featured === "true",
           body: m ? m[2] : raw,
         };
       });
@@ -108,7 +109,12 @@ function blogPages() {
               dateModified: p.date,
               inLanguage: "en",
               keywords: p.tags.join(", "),
-              author: { "@type": "Organization", name: p.author, url: `${ORIGIN}/` },
+              author: {
+                "@type": "Organization",
+                "@id": `${ORIGIN}/#organization`,
+                name: "LilaFold team",
+                url: `${ORIGIN}/`,
+              },
               publisher: { "@id": `${ORIGIN}/#organization` },
               image: `${ORIGIN}/og-blog.png`,
               isPartOf: { "@id": `${ORIGIN}${base}blog/#blog` },
@@ -135,7 +141,7 @@ function blogPages() {
         `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">`,
         entry(`${ORIGIN}${base}`, today, "weekly", "1.0"),
         entry(`${ORIGIN}${base}blog/`, latest, "weekly", "0.8"),
-        ...posts.map((p) => entry(`${ORIGIN}${base}blog/${p.slug}/`, p.date || today, "monthly", "0.6")),
+        ...posts.map((p) => entry(`${ORIGIN}${base}blog/${p.slug}/`, p.date || today, "monthly", p.featured === "true" || p.featured === true ? "0.8" : "0.6")),
         `</urlset>`,
         ``,
       ].join("\n");
