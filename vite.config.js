@@ -50,10 +50,10 @@ function blogPages() {
       base = c.base;
     },
     configureServer(server) {
-      const slugs = new Set(load().map((p) => p.slug));
       server.middlewares.use((req, _res, next) => {
         const m = (req.url || "").match(/^\/blog\/([a-z0-9-]+)\/?(\?.*)?$/);
-        if (m && slugs.has(m[1])) req.url = "/blog/index.html";
+        // re-read the folder so posts added while the dev server runs work too
+        if (m && load().some((p) => p.slug === m[1])) req.url = "/blog/index.html";
         next();
       });
     },

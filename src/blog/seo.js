@@ -43,7 +43,7 @@ const jsonLd = (id, data) => {
   if (!data) el.remove();
 };
 
-/** The address a post has on the live site, e.g. https://lilafold.io/blog/hello-lilafold/ */
+/** The address a post has on the live site, e.g. https://lilafold.io/blog/npus-not-gpus/ */
 export const postUrl = (slug) => `${ORIGIN}${BASE}blog/${encodeURIComponent(slug)}/`;
 export const blogUrl = `${ORIGIN}${BASE}blog/`;
 

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Logo from "./Logo.jsx";
+import { ArrowRight } from "./Icons.jsx";
 import { useCommunityStats, formatCount } from "../lib/useCommunityStats.js";
 
 const HuggingFaceIcon = () => (
@@ -133,8 +134,11 @@ export default function Nav({ home = true }) {
             count={gh}
             unit="stars"
           />
-          <a className="btn-light btn-sm nav-cta" href={joinHref} onClick={close}>
-            Join<span className="cta-long">&nbsp;early access</span>
+          <a className="nav-cta" href={joinHref} onClick={close}>
+            <span>
+              Join<span className="cta-long"> early access</span>
+            </span>
+            <ArrowRight className="nav-cta-arrow" />
           </a>
           <button
             type="button"

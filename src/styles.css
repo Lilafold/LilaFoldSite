@@ -100,7 +100,45 @@ html { scroll-behavior: smooth; scroll-padding-top: 88px; }
 .nav-links a[aria-current] { color: var(--text); background: rgba(233, 166, 255, 0.1); }
 .mobile-menu a[aria-current] { color: var(--lila-soft); }
 .btn-sm { padding: 9px 14px; font-size: 14px; text-decoration: none; }
-.btn-light.nav-cta { gap: 0; white-space: nowrap; }
+/* nav call to action: glass fill inside a lilac gradient border and a sheen that sweeps across on hover */
+.nav-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  height: 36px;
+  padding: 0 12px 0 15px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background:
+    linear-gradient(180deg, rgba(58, 30, 74, 0.95), rgba(28, 16, 38, 0.95)) padding-box,
+    linear-gradient(135deg, #f6d2ff 0%, #e9a6ff 35%, #c04fcf 70%, #7a3fd0 100%) border-box;
+  color: #fbf6ff;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 10px 26px -12px rgba(192, 79, 207, 0.85);
+  transition: box-shadow .3s ease, transform .2s ease;
+}
+.nav-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgba(246, 210, 255, 0.28) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .7s var(--ease-out);
+}
+.nav-cta:hover { box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 12px 30px -10px rgba(192, 79, 207, 1); }
+.nav-cta:hover::after { transform: translateX(120%); }
+.nav-cta:active { transform: translateY(1px); }
+.nav-cta-arrow { width: 14px; height: 14px; color: var(--lila-soft); transition: transform .3s var(--ease-out); }
+.nav-cta:hover .nav-cta-arrow { transform: translateX(2px); }
 .menu-btn {
   display: none;
   width: 38px;
@@ -655,47 +693,43 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
 .hw-point p { margin: 4px 0 0; color: var(--muted); font-size: 15px; line-height: 1.55; max-width: 44ch; }
 
 .hw-stage {
-  /* sized to fit four stacked modules plus caption in the pinned panel */
-  --w: min(440px, 84vw, calc((100svh - 72px - 170px) / 0.98));
+  /* the stack is a tall tower: size it by the height left in the pinned panel */
+  --mh: min(calc(100svh - 72px - 190px), 600px);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
 }
-.mini-stack {
-  position: relative;
-  width: var(--w);
-  /* room for four modules: three steps plus one full module */
-  height: calc(var(--w) * (0.1681 * 3 + 0.4752));
-  margin-bottom: 30px;
-}
 
-/* one photoreal module (928x441 cut-out, 156px stacking step) */
-.mini {
-  position: absolute;
-  left: 0;
-  bottom: calc(var(--i) * var(--w) * 0.1681);
-  width: var(--w);
-  aspect-ratio: 928 / 441;
-  z-index: var(--i);
-  will-change: transform, opacity, filter;
+/* base + up to four modules, sliced from one render; frame 553 x 696, layers placed in % */
+.machine {
+  position: relative;
+  /* sized by width so the frame always keeps its aspect ratio and the layers stay registered */
+  width: min(84vw, calc(var(--mh) * 553 / 696));
+  aspect-ratio: 553 / 696;
+  margin-bottom: 22px;
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55));
 }
-.mini:not(:first-child) { opacity: 0; }
-/* soft contact shadow on whatever it sits on */
-.mini::before {
+.machine::after {
+  /* pink glow pooling under the base */
   content: "";
   position: absolute;
   left: 4%;
   right: 4%;
-  bottom: -1%;
-  height: 10%;
+  bottom: -4%;
+  height: 9%;
+  z-index: -1;
   border-radius: 50%;
-  background: radial-gradient(ellipse at center, rgba(0, 0, 0, 0.6), transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(214, 70, 200, 0.4), transparent 70%);
+  filter: blur(10px);
 }
-.mini-img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
-.mini-active { opacity: 0; transition: opacity .5s ease; }
-/* the status light turns lilac once another module is seated on top */
-.mini.lit .mini-active { opacity: 1; }
+.machine img { position: absolute; display: block; height: auto; }
+.machine-base { left: 0.904%; top: 72.701%; width: 98.192%; }
+.machine-module { will-change: transform, opacity, filter; }
+.machine-module.m1 { left: 0.904%; top: 56.753%; width: 98.011%; }
+.machine-module.m2 { left: 1.085%; top: 37.931%; width: 97.649%; opacity: 0; }
+.machine-module.m3 { left: 1.085%; top: 19.109%; width: 97.468%; opacity: 0; }
+.machine-module.m4 { left: 1.266%; top: 0.718%; width: 97.288%; opacity: 0; }
 
 .hw-stage .stack-count { margin: 0; color: var(--muted); font-size: 15px; }
 .hw-stage .stack-count b {
@@ -1171,6 +1205,8 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
   .hw-point:not(.active) { display: none; }
   .hw-point.active { transform: none; }
   .hw-stage .fine { display: none; }
+  /* the current point sits under the stack on narrow screens, so leave room for it */
+  .hw-stage { --mh: min(calc(100svh - 72px - 330px), 600px); }
   .timeline { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
   .timeline::before { display: none; }
 }
@@ -1210,9 +1246,10 @@ ul.principles, ul.feature-list, ul.hw-points, ul.team, .model-next ul { list-sty
   .sr, .condense { opacity: 1; }
   .hw-track { height: auto; }
   .hw-sticky { position: static; height: auto; }
-  .mini { opacity: 1 !important; }
+  .machine-module { opacity: 1 !important; }
   .hw-point { opacity: 1; }
   .wisp { animation: none; }
+  .nav-cta::after { transition: none; }
   .beam::before { animation: none; }
   .marquee-track { animation: none; width: auto; }
   .marquee-row[aria-hidden] { display: none; }

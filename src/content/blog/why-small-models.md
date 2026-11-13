@@ -6,7 +6,6 @@ excerpt: General models try to know everything. We think most real work needs a 
 date: 2026-11-10
 author: LilaFold team
 tags: research, models
-featured: true
 ---
 
 Most AI today is rented. You send your data to someone else's data centre, a very large general model reads it, and you pay by the token. For a lot of tasks that works. For a lot of others it is the wrong shape of tool.

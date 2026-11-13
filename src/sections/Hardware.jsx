@@ -9,7 +9,7 @@ const DROPS = [0.08, 0.36, 0.64];
 const DROP_LEN = 0.24;
 
 const points = [
-  { title: "Start small", body: "One module runs a compact model on your desk or in your rack." },
+  { title: "Start small", body: "A base unit and one module run a compact model on your desk or in your rack." },
   { title: "Grow one module at a time", body: "Stack another to run more models at once. Splitting one large model across modules is part of our research." },
   { title: "NPU first", body: "NPUs (neural processing units) are chips built only for AI. We are researching them as a lower-power, lower-cost alternative to GPUs." },
 ];
@@ -20,19 +20,10 @@ const easeOut = (p) => 1 - (1 - p) ** 3;
 const IMG = `${import.meta.env.BASE_URL}hardware/`;
 
 /**
- * One aluminium module: an AI-generated product photo cut out of its black
- * background, in two frames: idle with a white status LED, and "connected"
- * with a lilac LED, which fades in once another module is seated on top.
+ * The machine is one AI-generated render of the full tower, sliced along the
+ * gaps between modules into a base layer and four module layers. All layers
+ * share one frame, so they register exactly; see .machine in styles.css.
  */
-function Module({ index, refFn }) {
-  return (
-    <div className="mini" style={{ "--i": index }} ref={refFn}>
-      <img className="mini-img" src={`${IMG}module.webp`} alt="" width="928" height="441" decoding="async" />
-      <img className="mini-img mini-active" src={`${IMG}module-active.webp`} alt="" width="928" height="441" decoding="async" />
-    </div>
-  );
-}
-
 export default function Hardware() {
   const trackRef = useRef(null);
   const modRefs = useRef([]);
@@ -71,8 +62,6 @@ export default function Hardware() {
         el.style.filter = d > 0 && d < 0.98 ? `blur(${((1 - e) * 10).toFixed(1)}px)` : "";
         if (d >= 1) seated += 1;
       });
-      // the connector of every module with another seated on it lights up
-      mods.forEach((el, k) => el && el.classList.toggle("lit", k < seated - 1));
 
       const s = Math.min(points.length - 1, Math.floor(p * points.length));
       if (seated !== lastCount) { lastCount = seated; setCount(seated); }
@@ -112,13 +101,47 @@ export default function Hardware() {
           </ul>
 
           <div className="hw-stage">
-            <div className="mini-stack" aria-hidden="true">
-              {Array.from({ length: MAX }, (_, i) => (
-                <Module key={i} index={i} refFn={(el) => { modRefs.current[i] = el; }} />
-              ))}
+            <div className="machine" aria-hidden="true">
+              <img className="machine-base" src={`${IMG}base.webp`} alt="" width="1086" height="368" decoding="async" />
+              <img
+                ref={(el) => { modRefs.current[0] = el; }}
+                className="machine-module m1"
+                src={`${IMG}module-1.webp`}
+                alt=""
+                width="1084"
+                height="284"
+                decoding="async"
+              />
+              <img
+                ref={(el) => { modRefs.current[1] = el; }}
+                className="machine-module m2"
+                src={`${IMG}module-2.webp`}
+                alt=""
+                width="1080"
+                height="282"
+                decoding="async"
+              />
+              <img
+                ref={(el) => { modRefs.current[2] = el; }}
+                className="machine-module m3"
+                src={`${IMG}module-3.webp`}
+                alt=""
+                width="1078"
+                height="312"
+                decoding="async"
+              />
+              <img
+                ref={(el) => { modRefs.current[3] = el; }}
+                className="machine-module m4"
+                src={`${IMG}module-4.webp`}
+                alt=""
+                width="1076"
+                height="352"
+                decoding="async"
+              />
             </div>
             <p className="stack-count">
-              <b>{count}</b> {count === 1 ? "module" : "modules"}
+              Base unit + <b>{count}</b> {count === 1 ? "module" : "modules"}
             </p>
             <p className="fine">
               Illustration of the concept, not a final design. No hardware is for sale yet. We will run pilots
