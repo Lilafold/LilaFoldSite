@@ -69,12 +69,12 @@ function blogPages() {
         const postList = posts
           .map(
             (p) =>
-              `<article><h2><a href="${ORIGIN}${base}blog/${p.slug}/">${esc(p.title)}</a></h2><time datetime="${p.date}">${p.date}</time><p>${esc(p.excerpt)}</p></article>`
+              `<article><h2><a href="${ORIGIN}${base}blog/${p.slug}/">${esc(p.title)}</a></h2><p>By ${esc(p.author)} · <time datetime="${esc(p.date)}">${esc(p.date)}</time></p><p>${esc(p.excerpt)}</p></article>`
           )
           .join("\n");
         bundle["blog/index.html"].source = template.replace(
           /<div id="root"><\/div>/,
-          `<div id="root"><main><h1>LilaFold Blog</h1><p>Research notes and news from the LilaFold team.</p>${postList}</main></div>`
+          `<div id="root"><header><nav aria-label="Primary"><a href="${ORIGIN}${base}">LilaFold</a> / <a href="${ORIGIN}${base}blog/">Blog</a></nav></header><main><h1>LilaFold Blog</h1><p>Research notes and news from the LilaFold team.</p>${postList}</main></div>`
         );
 
         for (const p of posts) {
@@ -95,7 +95,7 @@ function blogPages() {
           html = set(html, /<meta name="twitter:title" content="[^"]*">/, `<meta name="twitter:title" content="${esc(p.title)}">`);
           html = set(html, /<meta name="twitter:description" content="[^"]*">/, `<meta name="twitter:description" content="${esc(p.excerpt)}">`);
 
-          // structured data: keep the Blog and organisation nodes and add this post
+          // structured data: keep the Blog and organisation nodes and add this post + breadcrumbs
           html = html.replace(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/, (_m, json) => {
             const data = JSON.parse(json);
             data["@graph"].push({
@@ -119,14 +119,28 @@ function blogPages() {
               image: `${ORIGIN}/og-blog.png`,
               isPartOf: { "@id": `${ORIGIN}${base}blog/#blog` },
             });
+            data["@graph"].push({
+              "@type": "BreadcrumbList",
+              "@id": `${url}#breadcrumb`,
+              itemListElement: [
+                { "@type": "ListItem", position: 1, name: "LilaFold", item: `${ORIGIN}${base}` },
+                { "@type": "ListItem", position: 2, name: "Blog", item: `${ORIGIN}${base}blog/` },
+                { "@type": "ListItem", position: 3, name: p.title, item: url },
+              ],
+            });
             return `<script type="application/ld+json">\n${JSON.stringify(data, null, 2)}\n</script>`;
           });
 
-          // the post's text, for crawlers; React replaces it on load
+          // the post's text and navigation links, for crawlers; React replaces it on load
+          const relatedLinks = posts
+            .filter((other) => other.slug !== p.slug)
+            .map((other) => `<li><a href="${ORIGIN}${base}blog/${other.slug}/">${esc(other.title)}</a></li>`)
+            .join("");
+          const postFooter = `<footer><nav aria-label="More from LilaFold"><p><a href="${ORIGIN}${base}">LilaFold Home</a> | <a href="${ORIGIN}${base}blog/">All Research Notes</a></p>${relatedLinks ? `<ul>${relatedLinks}</ul>` : ""}</nav></footer>`;
           html = set(
             html,
             /<div id="root"><\/div>/,
-            `<div id="root"><article><h1>${esc(p.title)}</h1><p>${esc(p.excerpt)}</p>${renderMarkdown(p.body)}</article></div>`
+            `<div id="root"><header><nav aria-label="Breadcrumb"><a href="${ORIGIN}${base}">LilaFold</a> / <a href="${ORIGIN}${base}blog/">Blog</a></nav></header><article><header><h1>${esc(p.title)}</h1><p>By ${esc(p.author)} · <time datetime="${esc(p.date)}">${esc(p.date)}</time></p><p>${esc(p.excerpt)}</p></header>${renderMarkdown(p.body)}</article>${postFooter}</div>`
           );
           this.emitFile({ type: "asset", fileName: `blog/${p.slug}/index.html`, source: html });
         }

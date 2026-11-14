@@ -72,6 +72,8 @@ With only 12 test campaigns, we resampled whole campaigns to get a realistic ran
 
 Lala L1-Lite Ablation came out ahead in 91% of the resamples. So on this test set, Lala L1-Lite Ablation and the best language model probe are close on accuracy, and we won't claim more than that. What isn't close is the cost: a 3-million-parameter model on a CPU against a 1.5-billion-parameter model on a GPU.
 
+> "Across 76,312 Linux host events in 12 unseen lab campaigns, the 3.3M-parameter Lala L1-Lite Ablation ensemble achieves 0.89 PR-AUC in 15 seconds on a desktop CPU — outperforming 1.5B to 3B parameter language model probes running on an RTX 4090."
+
 ## Does it work on campaigns it has never seen?
 
 After the main benchmark, we scored Lala L1-Lite Ablation on five more lab campaigns it had never seen in training or testing. Four of them come from a newer collector that also records full command lines, so the input looks different from the main test set. We left out other unseen campaigns that were reruns of training campaigns, because a model can partly recognise a rerun.
@@ -142,4 +144,4 @@ We would rather say this plainly than have you find out later.
 
 The big open question is real-world traffic. Next, we are validating on live hosts with realistic everyday activity, and filling in the attack types our test set doesn't cover yet.
 
-Lala L1-Lite is a small piece of a bigger idea: a lot of useful work can be done by small, specialised models that are cheap enough to run anywhere. If you want to follow along, or you run Linux hosts and would like to try it, sign up for early access.
+Model checkpoints, evaluation scripts, and the full model card are available on [Hugging Face (LilaFold/lala-l1)](https://huggingface.co/LilaFold/lala-l1) and [GitHub (Lilafold/lala-l1)](https://github.com/Lilafold/lala-l1). Lala L1-Lite is a small piece of a bigger idea at [LilaFold](https://lilafold.io/): a lot of useful work can be done by small, specialised models that are cheap enough to run anywhere. If you want to follow along, or you run Linux hosts and would like to try it, [sign up for early access](https://lilafold.io/#join).
